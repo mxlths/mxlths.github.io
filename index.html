@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P5.js Sketch Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2a6bff;
+      --secondary-color: #f5f7fa;
+      --accent-color: #ff6b6b;
+      --text-color: #333;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--secondary-color);
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .sketch-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    
+    .sketch-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sketch-thumbnail {
+      height: 200px;
+      background-color: #e9ecef;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .sketch-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .sketch-thumbnail .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-color) 0%, #7f53ff 100%);
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    
+    .sketch-info {
+      padding: 1.5rem;
+    }
+    
+    .sketch-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .sketch-description {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    
+    .sketch-link {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    
+    .sketch-link:hover {
+      background-color: #1a5ae3;
+    }
+    
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: #777;
+      font-size: 0.9rem;
+    }
+    
+    .github-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .github-link:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>P5.js Sketch Gallery</h1>
+    <p>A collection of creative coding experiments built with p5.js</p>
+  </header>
+  
+  <main class="gallery">
+    <div class="sketch-card">
+      <div class="sketch-thumbnail">
+        <div class="placeholder">GC</div>
+      </div>
+      <div class="sketch-info">
+        <h2 class="sketch-title">Generative Cycloid</h2>
+        <p class="sketch-description">An interactive sketch generating beautiful cycloid patterns with customizable parameters.</p>
+        <a href="GenerativeCycloid/index.html" class="sketch-link">View Sketch</a>
+      </div>
+    </div>
+    
+    <div class="sketch-card">
+      <div class="sketch-thumbnail">
+        <div class="placeholder">L3D</div>
+      </div>
+      <div class="sketch-info">
+        <h2 class="sketch-title">Lissajous 3D</h2>
+        <p class="sketch-description">A three-dimensional visualization of Lissajous curves creating complex and mesmerizing patterns.</p>
+        <a href="Lissajous3D/index.html" class="sketch-link">View Sketch</a>
+      </div>
+    </div>
+    
+    <div class="sketch-card">
+      <div class="sketch-thumbnail">
+        <div class="placeholder">PS</div>
+      </div>
+      <div class="sketch-info">
+        <h2 class="sketch-title">Polar Spirograph</h2>
+        <p class="sketch-description">An interactive polar spirograph that generates intricate geometric patterns based on mathematical formulas.</p>
+        <a href="PolarSpirograph/index.html" class="sketch-link">View Sketch</a>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>Created with ❤️ using <a href="https://p5js.org/" class="github-link" target="_blank">p5.js</a> | 
+    <a href="https://github.com/mxlths/mxlths.github.io" class="github-link" target="_blank">View on GitHub</a></p>
+  </footer>
+</body>
+</html> 
