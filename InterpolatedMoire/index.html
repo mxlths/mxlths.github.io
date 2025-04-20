@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interpolated Moiré</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="https://unpkg.com/p5.js-svg@1.5.1"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    
+    .controls {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 375px;
+      height: 100vh;
+      background-color: rgba(240, 240, 240, 0.9);
+      padding: 15px;
+      overflow-y: auto;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .control-group h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    
+    .control-row {
+      display: flex;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    
+    .control-label {
+      width: 160px;
+      font-size: 14px;
+    }
+    
+    .control-widgets {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    
+    .control-widgets input[type="range"] {
+      flex: 1;
+      margin-right: 5px;
+    }
+    
+    .value-display {
+      width: 40px;
+      font-size: 12px;
+      text-align: right;
+    }
+    
+    .control-widgets input[type="number"] {
+      width: 60px;
+    }
+    
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    
+    button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <h2>Interpolated Moiré</h2>
+    
+    <!-- Basic Pattern Parameters -->
+    <div class="control-group">
+      <h3>Basic Pattern</h3>
+      <div class="control-row">
+        <div class="control-label">Points (N)</div>
+        <div class="control-widgets">
+          <input type="range" id="n-value" min="3" max="30" step="1">
+          <span id="n-display" class="value-display">7</span>
+          <input type="number" id="n-input" min="3" max="30" step="1" value="7">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Radius Offset</div>
+        <div class="control-widgets">
+          <input type="range" id="offset-value" min="0" max="10" step="0.1">
+          <span id="offset-display" class="value-display">2.0</span>
+          <input type="number" id="offset-input" min="0" max="10" step="0.1" value="2.0">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Radius Scale</div>
+        <div class="control-widgets">
+          <input type="range" id="radiusScale-value" min="20" max="200" step="1">
+          <span id="radiusScale-display" class="value-display">50</span>
+          <input type="number" id="radiusScale-input" min="20" max="200" step="1" value="50">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Duplication Parameters -->
+    <div class="control-group">
+      <h3>Duplication</h3>
+      <div class="control-row">
+        <div class="control-label">Cycle Count</div>
+        <div class="control-widgets">
+          <input type="range" id="cycleCount-value" min="2" max="200" step="1">
+          <span id="cycleCount-display" class="value-display">100</span>
+          <input type="number" id="cycleCount-input" min="2" max="200" step="1" value="100">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Number of Cycles</div>
+        <div class="control-widgets">
+          <input type="range" id="numberOfCycles-value" min="1" max="10" step="1">
+          <span id="numberOfCycles-display" class="value-display">1</span>
+          <input type="number" id="numberOfCycles-input" min="1" max="10" step="1" value="1">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Initial Scale Offset</div>
+        <div class="control-widgets">
+          <input type="range" id="initialScaleOffset-value" min="1" max="2" step="0.01">
+          <span id="initialScaleOffset-display" class="value-display">1.10</span>
+          <input type="number" id="initialScaleOffset-input" min="1" max="2" step="0.01" value="1.10">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Scale Decay</div>
+        <div class="control-widgets">
+          <input type="range" id="scaleDecay-value" min="0.01" max="0.99" step="0.01">
+          <span id="scaleDecay-display" class="value-display">0.90</span>
+          <input type="number" id="scaleDecay-input" min="0.01" max="0.99" step="0.01" value="0.90">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Fluctuation Amount</div>
+        <div class="control-widgets">
+          <input type="range" id="fluctuationAmount-value" min="0" max="1" step="0.01">
+          <span id="fluctuationAmount-display" class="value-display">0.10</span>
+          <input type="number" id="fluctuationAmount-input" min="0" max="1" step="0.01" value="0.10">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Drawing Mode Parameters -->
+    <div class="control-group">
+      <h3>Drawing Mode</h3>
+      <div class="control-row">
+        <div class="control-label">Draw Mode</div>
+        <div class="control-widgets">
+          <select id="drawMode-select">
+            <option value="0">Curves</option>
+            <option value="1">Radial Lines</option>
+          </select>
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Radial Line Length</div>
+        <div class="control-widgets">
+          <input type="range" id="radialLineLengthUnits-value" min="0.01" max="0.5" step="0.01">
+          <span id="radialLineLengthUnits-display" class="value-display">0.05</span>
+          <input type="number" id="radialLineLengthUnits-input" min="0.01" max="0.5" step="0.01" value="0.05">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Segments Per Curve</div>
+        <div class="control-widgets">
+          <input type="range" id="segmentsPerCurve-value" min="10" max="500" step="10">
+          <span id="segmentsPerCurve-display" class="value-display">100</span>
+          <input type="number" id="segmentsPerCurve-input" min="10" max="500" step="10" value="100">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Line Rotation (deg)</div>
+        <div class="control-widgets">
+          <input type="range" id="lineRotationDegrees-value" min="0" max="45" step="0.1">
+          <span id="lineRotationDegrees-display" class="value-display">15.0</span>
+          <input type="number" id="lineRotationDegrees-input" min="0" max="45" step="0.1" value="15.0">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Moiré Effect Parameters -->
+    <div class="control-group">
+      <h3>Moiré Effect</h3>
+      <div class="control-row">
+        <div class="control-label">Enable Moiré Effect</div>
+        <div class="control-widgets">
+          <input type="checkbox" id="enableMoireEffect-toggle" checked>
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Number of Layers</div>
+        <div class="control-widgets">
+          <input type="range" id="numLayers-value" min="1" max="10" step="1">
+          <span id="numLayers-display" class="value-display">2</span>
+          <input type="number" id="numLayers-input" min="1" max="10" step="1" value="2">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Layer Rotation (deg)</div>
+        <div class="control-widgets">
+          <input type="range" id="layerRotationOffset-value" min="0" max="45" step="0.1">
+          <span id="layerRotationOffset-display" class="value-display">3.0</span>
+          <input type="number" id="layerRotationOffset-input" min="0" max="45" step="0.1" value="3.0">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Layer Scale Offset</div>
+        <div class="control-widgets">
+          <input type="range" id="layerScaleOffset-value" min="0" max="0.2" step="0.001">
+          <span id="layerScaleOffset-display" class="value-display">0.020</span>
+          <input type="number" id="layerScaleOffset-input" min="0" max="0.2" step="0.001" value="0.020">
+        </div>
+      </div>
+      <div class="control-row">
+        <div class="control-label">Layer Points Offset</div>
+        <div class="control-widgets">
+          <input type="range" id="layerPointOffset-value" min="0" max="5" step="1">
+          <span id="layerPointOffset-display" class="value-display">0</span>
+          <input type="number" id="layerPointOffset-input" min="0" max="5" step="1" value="0">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Buttons -->
+    <div class="control-group">
+      <div class="button-group">
+        <button id="regenerate-btn">Regenerate</button>
+        <button id="export-svg">Export SVG</button>
+        <button id="reset-params">Reset Parameters</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="sketch.js"></script>
+</body>
+</html> 
